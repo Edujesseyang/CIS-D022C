@@ -1,6 +1,6 @@
 package Node;
 
-public class main_test {
+public class NodeList_test {
     public static void main(String[] args) {
         Node<String> n5 = new Node<>("!");
         Node<String> n4 = new Node<String>("?", n5);
@@ -22,5 +22,6 @@ public class main_test {
             start = start.getNext();
         }
         System.out.println();
+
     }
 }
