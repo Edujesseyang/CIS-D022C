@@ -10,9 +10,9 @@ import java.util.Scanner;
  * @version 4.0
  */
 public class CountingGame {
-    public static void main(String args[]) {
-        ListInterface<Integer> players = null;
-        ListInterface<String> rhyme = null;
+    public static void main(String[] args) {
+        ListInterface<Integer> players;
+        ListInterface<String> rhyme;
         int max;
         int position = 1; // always start with the first player
         System.out.println("Please enter the number of players.");
@@ -20,14 +20,14 @@ public class CountingGame {
         System.out.println("Constructing list of players");
 // ADD CODE HERE TO CREATE THE LIST OF PLAYERS
         players = new AList<Integer>();
-        for (int i = 2; i < max; i++) {
+        for (int i = position; i <= max; i++) {
             players.add(i);
         }
         System.out.println("The players list is " + players);
         rhyme = getRhyme();
 // ADD CODE HERE TO PLAY THE GAME
-        doRhyme(players, rhyme, max);
-        System.out.println("The winner is " + players.getEntry(1));
+        int winnerPosition = doRhyme(players, rhyme, max);
+        System.out.println("The winner is " + players.getEntry(winnerPosition));
     }
 
     /**
@@ -41,22 +41,30 @@ public class CountingGame {
      * @return The position of the player eliminated.
      */
     public static int doRhyme(ListInterface<Integer> players, ListInterface<String> rhyme, int startAt) {
-// COMPLETE THIS METHOD
-        if (startAt < 2 || startAt > players.getLength()) {
-            throw new IllegalArgumentException("StartAt should be greater or equals 2.");
-        }
+        // define a var for further use, we don't need to getLength everytime.
         int rhymeLength = rhyme.getLength();
-        int selected;
-        while (players.getLength() != 1) {
-            int count = 1;
-            for (int i = startAt; i < players.getLength(); i++) {
-                if (count % rhymeLength == 0) {
-                    players.remove(count);
-                }
-                count++;
+
+        // define a result var = -1, for further change
+        int lastEliminatedPosition = -1;
+
+        // loop until only 1 player left.
+        while (players.getLength() > 1) {
+            // get the index of next target; % players.len for the case if plays less than rhyme.
+            int deleteIndex = (startAt + rhymeLength - 1) % players.getLength();
+
+            // store the position of the last eliminated player
+            lastEliminatedPosition = deleteIndex;
+
+            // remove player
+            players.remove(deleteIndex);
+
+            // update startAt for next round
+            startAt = deleteIndex;
+            if (startAt >= players.getLength()) {
+                startAt = 0;
             }
         }
-        return -1;
+        return lastEliminatedPosition;
     }
 
     /**
@@ -90,7 +98,7 @@ public class CountingGame {
      */
     private static ListInterface<String> getRhyme() {
         Scanner input;
-        String inString = "";
+        String inString;
         ListInterface<String> rhyme = new AList<String>();
         try {
             input = new Scanner(System.in);
