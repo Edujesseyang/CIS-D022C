@@ -16,12 +16,6 @@ class Node<T> {
         // next and previous remain null by default for a single node
     }
 
-    public Node(T data, Node<T> next, Node<T> previous) {
-        this.data = data;
-        this.next = next;
-        this.previous = previous;
-    }
-
     public void setData(T data) {
         this.data = data;
     }
@@ -242,10 +236,13 @@ public class DoublyLinkedList<T> {
     /**
      * Removes all entries from this list.
      */
-
     public void clear() {
-        head.setNext(null);
-        tail.setPrevious(null);
+        if (head != null) {
+            head.setNext(null);
+        }
+        if (tail != null) {
+            tail.setPrevious(null);
+        }
         head = null;
         tail = null;
         numOfEntries = 0;
@@ -392,6 +389,9 @@ public class DoublyLinkedList<T> {
 
     @SuppressWarnings("unchecked")
     public T[] toArray() {
+        if (numOfEntries == 0) {
+            return (T[]) Array.newInstance(Object.class, 0);
+        }
         Node<T> current = head;
         T[] array = (T[]) Array.newInstance(head.getData().getClass(), numOfEntries);
         for (int i = 0; i < numOfEntries; i++) {
