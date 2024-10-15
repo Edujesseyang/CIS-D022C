@@ -104,5 +104,83 @@ public class test {
         myList8.remove(5);
         System.out.println("After removed 5 : " + myList8);
 
+        DoublyLinkedList<String> myList9 = new DoublyLinkedList<String>();
+        myList9.add("0");
+        myList9.add("1");
+        myList9.add("2");
+        myList9.add("3");
+        myList9.add("4");
+        myList9.add("5");
+        myList9.add("6");
+        myList9.add("7");
+        myList9.add("8");
+        System.out.println("Old list: " + myList9);
+        myList9.remove(4);
+        System.out.println("After removed 4 : " + myList9);
+
+        System.out.println("\n******************** Test replace ******************************");
+        DoublyLinkedList<String> myList10 = new DoublyLinkedList<String>();
+        myList10.add("0");
+        myList10.add("1");
+        myList10.add("2");
+        myList10.add("3");
+        myList10.add("4");
+        myList10.add("5");
+        myList10.add("6");
+        myList10.add("7");
+        myList10.add("8");
+        System.out.println("Old list: " + myList10);
+        myList10.replace(0, "replaced");
+        System.out.println("After replaced 0 : " + myList10);
+        myList10.replace(1, "replaced");
+        System.out.println("After replaced 1 : " + myList10);
+        myList10.replace(2, "replaced");
+        System.out.println("After replaced 2 : " + myList10);
+        myList10.replace(4, "replaced");
+        System.out.println("After replaced 4 : " + myList10);
+        myList10.replace(7, "replaced");
+        System.out.println("After replaced 7 : " + myList10);
+        myList10.replace(6, "replaced");
+        System.out.println("After replaced 6 : " + myList10);
+        myList10.replace(8, "replaced");
+        System.out.println("After replaced 8 : " + myList10);
+
+        System.out.println("\n******************** Test contain ******************************");
+        boolean isContain = myList10.contains("3");
+        boolean isContain2 = myList10.contains("5");
+        boolean isContain3 = myList10.contains("4");
+        System.out.println("Is 3 in last list: " + isContain);
+        System.out.println("Is 5 in last list: " + isContain2);
+        System.out.println("Is 4 in last list: " + isContain3);
+
+        System.out.println("\n******************** Test getEntry ******************************");
+        String e1 = myList10.getEntry(3);
+        String e2 = myList10.getEntry(5);
+        String e3 = myList10.getEntry(7);
+        System.out.println("entry at 3: " + e1);
+        System.out.println("entry at 3: " + e2);
+        System.out.println("entry at 3: " + e3);
+
+        System.out.println("\n******************** Test getLength ******************************");
+        System.out.println("List 1 : " + myList.getLength());
+        System.out.println("List 2 : " + myList2.getLength());
+        System.out.println("List 3 : " + myList4.getLength());
+        System.out.println("List 4 : " + myList10.getLength());
+
+        System.out.println("\n******************** Test toArray ******************************");
+        String[] array = myList10.toArray();
+        System.out.println("Array address: " + array);
+        System.out.print("Array elements: ");
+        for (String s : array) {
+            System.out.print("{" + s + "}, ");
+        }
+        System.out.println();
+
+        System.out.println("\n******************** Test clear and isEmpty ******************************");
+        myList10.clear();
+        System.out.println(myList10);
+        System.out.println("Is list empty: " + myList10.isEmpty());
+
+
     }
 }

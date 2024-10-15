@@ -1,5 +1,7 @@
 package DoublyLinkedList;
 
+import java.lang.reflect.Array;
+
 class Node<T> {
     private T data;
     private Node<T> next;
@@ -50,7 +52,7 @@ class Node<T> {
     }
 }
 
-public class DoublyLinkedList<T> implements ListInterface {
+public class DoublyLinkedList<T> {
     private Node<T> head;
     private Node<T> tail;
     private int numOfEntries;
@@ -68,10 +70,10 @@ public class DoublyLinkedList<T> implements ListInterface {
      *
      * @param data The object to be added as a new entry.
      */
-    @Override
-    public void add(Object data) {
+
+    public void add(T data) {
         // create a new node with input data
-        Node<T> newNode = (Node<T>) new Node<>(data);
+        Node<T> newNode = new Node<>(data);
         // handle the case if the list is empty
         if (this.numOfEntries == 0) {
             head = newNode;
@@ -98,14 +100,14 @@ public class DoublyLinkedList<T> implements ListInterface {
      *                                   newPosition less than 1, or
      *                                   newPosition greater than getLength()+1.
      */
-    @Override
-    public void add(int index, Object data) {
+
+    public void add(int index, T data) {
         // throw exception if index out of bounds
         if (index < 0 || index > numOfEntries) {
             throw new IndexOutOfBoundsException("Out of bounds!");
         }
         // create a new node
-        Node<T> newNode = (Node<T>) new Node<>(data);
+        Node<T> newNode = new Node<>(data);
         // handle if add to the last
         if (index == numOfEntries) {
             tail.setNext(newNode);
@@ -240,11 +242,13 @@ public class DoublyLinkedList<T> implements ListInterface {
     /**
      * Removes all entries from this list.
      */
-    @Override
+
     public void clear() {
         head.setNext(null);
         tail.setPrevious(null);
-
+        head = null;
+        tail = null;
+        numOfEntries = 0;
     }
 
     /**
@@ -259,9 +263,43 @@ public class DoublyLinkedList<T> implements ListInterface {
      *                                   givenPosition less than 1, or
      *                                   givenPosition greater than getLength()+1.
      */
-    @Override
-    public Object replace(int givenPosition, Object newEntry) {
-        return null;
+
+    public T replace(int givenPosition, T newEntry) {
+        if (givenPosition < 0 || givenPosition >= numOfEntries) {
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+        T originalData;
+        if (givenPosition == 0) {
+            originalData = head.getData();
+            head.setData(newEntry);
+            return originalData;
+        }
+        if (givenPosition == numOfEntries - 1) {
+            originalData = tail.getData();
+            tail.setData(newEntry);
+            return originalData;
+        }
+
+        Node<T> current;
+        // handle the case if index is in first half
+        if (givenPosition < numOfEntries / 2) {
+            // traverse from the head
+            current = head;
+            // traverse to one node before the one needs to be removed
+            for (int i = 0; i < givenPosition; i++) {
+                current = current.getNext();
+            }
+        } else { // handle the case if the removing node is in the last half
+            // traverse from the tail
+            current = tail;
+            // traverse to the node after the one needs to be removed
+            for (int i = 0; i < numOfEntries - givenPosition - 1; i++) {
+                current = current.getPrevious();
+            }
+        }
+        originalData = current.getData();
+        current.setData(newEntry);
+        return originalData;
     }
 
     /**
@@ -274,9 +312,37 @@ public class DoublyLinkedList<T> implements ListInterface {
      *                                   givenPosition less than 1, or
      *                                   givenPosition greater than getLength()+1.
      */
-    @Override
-    public Object getEntry(int givenPosition) {
-        return null;
+
+    public T getEntry(int givenPosition) {
+        if (givenPosition < 0 || givenPosition >= numOfEntries) {
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+
+        if (givenPosition == 0) {
+            return head.getData();
+        }
+        if (givenPosition == numOfEntries - 1) {
+            return tail.getData();
+        }
+
+        Node<T> current;
+        // handle the case if index is in first half
+        if (givenPosition < numOfEntries / 2) {
+            // traverse from the head
+            current = head;
+            // traverse to one node before the one needs to be removed
+            for (int i = 0; i < givenPosition; i++) {
+                current = current.getNext();
+            }
+        } else { // handle the case if the removing node is in the last half
+            // traverse from the tail
+            current = tail;
+            // traverse to the node after the one needs to be removed
+            for (int i = 0; i < numOfEntries - givenPosition - 1; i++) {
+                current = current.getPrevious();
+            }
+        }
+        return current.getData();
     }
 
     /**
@@ -285,13 +351,14 @@ public class DoublyLinkedList<T> implements ListInterface {
      * @param anEntry The object that is the desired entry.
      * @return True if the list contains anEntry, or false if not.
      */
-    @Override
-    public boolean contains(Object anEntry) {
+
+    public boolean contains(T anEntry) {
         Node<T> current = head;
         for (int i = 0; i < this.numOfEntries - 1; i++) {
             if (current.getData().equals(anEntry)) {
                 return true;
             }
+            current = current.getNext();
         }
         return false;
     }
@@ -301,7 +368,7 @@ public class DoublyLinkedList<T> implements ListInterface {
      *
      * @return The integer number of entries currently in the list.
      */
-    @Override
+
     public int getLength() {
         return numOfEntries;
     }
@@ -311,7 +378,7 @@ public class DoublyLinkedList<T> implements ListInterface {
      *
      * @return True if the list is empty, or false if not.
      */
-    @Override
+
     public boolean isEmpty() {
         return head == null;
     }
@@ -322,9 +389,16 @@ public class DoublyLinkedList<T> implements ListInterface {
      *
      * @return A newly allocated array of all the entries in the list.
      */
-    @Override
-    public Object[] toArray() {
-        return new Object[0];
+
+    @SuppressWarnings("unchecked")
+    public T[] toArray() {
+        Node<T> current = head;
+        T[] array = (T[]) Array.newInstance(head.getData().getClass(), numOfEntries);
+        for (int i = 0; i < numOfEntries; i++) {
+            array[i] = current.getData();
+            current = current.getNext();
+        }
+        return array;
     }
 
     /**
@@ -339,19 +413,16 @@ public class DoublyLinkedList<T> implements ListInterface {
         Node<T> currentNode = head;
         for (int i = 0; i < numOfEntries; i++) {
             if (currentNode != null) {
-                result.append(currentNode.getData().toString());
+                result.append(currentNode.getData() != null ? currentNode.getData().toString() : "null");
                 if (i < numOfEntries - 1) { // Add a separator for all but the last element
                     result.append(", ");
                 }
                 currentNode = currentNode.getNext();
             } else {
-                result.append("null, ");
+                result.append("null-node, ");
             }
         }
-
         result.append("}");
         return result.toString();
-
-
     }
 }
