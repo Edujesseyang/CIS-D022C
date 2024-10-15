@@ -50,7 +50,7 @@ class Node<T> {
     }
 }
 
-public class DoublyLinkedList<T> {
+public class DoublyLinkedList<T> implements ListInterface {
     private Node<T> head;
     private Node<T> tail;
     private int numOfEntries;
@@ -61,9 +61,17 @@ public class DoublyLinkedList<T> {
         this.numOfEntries = 0;
     }
 
-    public void add(T data) {
+    /**
+     * Adds a new entry to the end of this list.
+     * Entries currently in the list are unaffected.
+     * The list's size increased by 1.
+     *
+     * @param data The object to be added as a new entry.
+     */
+    @Override
+    public void add(Object data) {
         // create a new node with input data
-        Node<T> newNode = new Node<>(data);
+        Node<T> newNode = (Node<T>) new Node<>(data);
         // handle the case if the list is empty
         if (this.numOfEntries == 0) {
             head = newNode;
@@ -77,13 +85,27 @@ public class DoublyLinkedList<T> {
         numOfEntries++;
     }
 
-    public void add(int index, T data) {
+    /**
+     * Adds a new entry at a specified position within this list.
+     * Entries originally at and above the specified position
+     * are at the next higher position within the list.
+     * The list's size increased by 1.
+     *
+     * @param index An integer that specifies the desired
+     *                    position of the new entry.
+     * @param data    The object to be added as a new entry.
+     * @throws IndexOutOfBoundsException if either
+     *                                   newPosition less than 1, or
+     *                                   newPosition greater than getLength()+1.
+     */
+    @Override
+    public void add(int index, Object data) {
         // throw exception if index out of bounds
         if (index < 0 || index > numOfEntries) {
             throw new IndexOutOfBoundsException("Out of bounds!");
         }
         // create a new node
-        Node<T> newNode = new Node<T>(data);
+        Node<T> newNode = (Node<T>) new Node<>(data);
         // handle if add to the last
         if (index == numOfEntries) {
             tail.setNext(newNode);
@@ -131,7 +153,8 @@ public class DoublyLinkedList<T> {
         numOfEntries++;
     }
 
-    public void remove(int index) {
+
+    public T remove(int index) {
         // throw exception if index out of bounds
         if (index < 0 || index >= numOfEntries) {
             throw new IndexOutOfBoundsException("Index Out of Bounds");
@@ -139,6 +162,7 @@ public class DoublyLinkedList<T> {
 
         // handle the case that removing the first entry
         if (index == 0) {
+            T removed = head.getData();
             // handle the case that there is only one entry
             if (head == tail) {
                 head = null;
@@ -156,11 +180,12 @@ public class DoublyLinkedList<T> {
             // update num of entries
             numOfEntries--;
             // return after the job done
-            return;
+            return removed;
         }
 
         // handle the case that removing last entry
         if (index == numOfEntries - 1) {
+            T removed = tail.getData();
             // define the new tail
             Node<T> last = tail.getPrevious();
             // disconnect new tail's next
@@ -172,7 +197,7 @@ public class DoublyLinkedList<T> {
             // update num of entries
             numOfEntries--;
             // return after the job done
-            return;
+            return removed;
         }
 
         // define 3 nodes,
@@ -195,6 +220,7 @@ public class DoublyLinkedList<T> {
                 current = current.getPrevious();
             }
         }
+        T removed = current.getData();
         // set before and current
         before = current.getPrevious();
         after = current.getNext();
@@ -208,8 +234,105 @@ public class DoublyLinkedList<T> {
 
         // update num of entries
         numOfEntries--;
+        return removed;
     }
 
+    /**
+     * Removes all entries from this list.
+     */
+    @Override
+    public void clear() {
+        head.setNext(null);
+        tail.setPrevious(null);
+
+    }
+
+    /**
+     * Replaces the entry at a given position in this list.
+     *
+     * @param givenPosition An integer that indicates the position of the
+     *                      entry to be replaced.
+     * @param newEntry      The object that will replace the entry at the
+     *                      position givenPosition.
+     * @return The original entry that was replaced.
+     * @throws IndexOutOfBoundsException if either
+     *                                   givenPosition less than 1, or
+     *                                   givenPosition greater than getLength()+1.
+     */
+    @Override
+    public Object replace(int givenPosition, Object newEntry) {
+        return null;
+    }
+
+    /**
+     * Retrieves the entry at a given position in this list.
+     *
+     * @param givenPosition An integer that indicates the position of
+     *                      the desired entry.
+     * @return A reference to the indicated entry.
+     * @throws IndexOutOfBoundsException if either
+     *                                   givenPosition less than 1, or
+     *                                   givenPosition greater than getLength()+1.
+     */
+    @Override
+    public Object getEntry(int givenPosition) {
+        return null;
+    }
+
+    /**
+     * Sees whether this list contains a given entry.
+     *
+     * @param anEntry The object that is the desired entry.
+     * @return True if the list contains anEntry, or false if not.
+     */
+    @Override
+    public boolean contains(Object anEntry) {
+        Node<T> current = head;
+        for (int i = 0; i < this.numOfEntries - 1; i++) {
+            if (current.getData().equals(anEntry)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Gets the length of this list.
+     *
+     * @return The integer number of entries currently in the list.
+     */
+    @Override
+    public int getLength() {
+        return numOfEntries;
+    }
+
+    /**
+     * Sees whether this list is empty.
+     *
+     * @return True if the list is empty, or false if not.
+     */
+    @Override
+    public boolean isEmpty() {
+        return head == null;
+    }
+
+    /**
+     * Retrieves all entries that are in this list in the order in which
+     * they occur in the list.
+     *
+     * @return A newly allocated array of all the entries in the list.
+     */
+    @Override
+    public Object[] toArray() {
+        return new Object[0];
+    }
+
+    /**
+     * Retrieves all entries that are in this list in the order in which
+     * they occur in the list.
+     *
+     * @return A newly allocated array of all the entries in the list.
+     */
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder("{");
