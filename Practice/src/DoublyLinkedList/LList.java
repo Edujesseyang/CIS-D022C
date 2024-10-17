@@ -46,12 +46,14 @@ class Node<T> {
     }
 }
 
-public class DoublyLinkedList<T> {
+public class LList<T> implements ListInterface<T> {
     private Node<T> head;
     private Node<T> tail;
     private int numOfEntries;
+    // I add this final variable, it can be used to change it simply to convert indexing based on between 0 ro 1
+    private final int INDEX_BASED_ON = 1;
 
-    public DoublyLinkedList() {
+    public LList() {
         this.head = null;
         this.tail = null;
         this.numOfEntries = 0;
@@ -62,14 +64,15 @@ public class DoublyLinkedList<T> {
      * Entries currently in the list are unaffected.
      * The list's size increased by 1.
      *
-     * @param data The object to be added as a new entry.
+     * @param newEntry The object to be added as a new entry.
      */
 
-    public void add(T data) {
+    @Override
+    public void add(T newEntry) {
         // create a new node with input data
-        Node<T> newNode = new Node<>(data);
+        Node<T> newNode = new Node<>(newEntry);
         // handle the case if the list is empty
-        if (this.numOfEntries == 0) {
+        if (numOfEntries == 0) {
             head = newNode;
         } else { // handle the case if the list is not empty
             tail.setNext(newNode);
@@ -95,7 +98,11 @@ public class DoublyLinkedList<T> {
      *                                   newPosition greater than getLength()+1.
      */
 
+    @Override
     public void add(int index, T data) {
+        if (INDEX_BASED_ON == 1) {
+            index -= INDEX_BASED_ON;
+        }
         // throw exception if index out of bounds
         if (index < 0 || index > numOfEntries) {
             throw new IndexOutOfBoundsException("Out of bounds!");
@@ -103,14 +110,22 @@ public class DoublyLinkedList<T> {
         // create a new node
         Node<T> newNode = new Node<>(data);
         // handle if add to the last
-        if (index == numOfEntries) {
+        if (index == 0) { // handle if add to the first
+            if (head == null) {
+                head = newNode;
+                tail = newNode;
+            } else {
+                head.setPrevious(newNode);
+                newNode.setNext(head);
+                head = newNode;
+            }
+
+        } else if (index == numOfEntries) {
             tail.setNext(newNode);
             newNode.setPrevious(tail);
             tail = newNode;
-        } else if (index == 0) { // handle if add to the first
-            head.setPrevious(newNode);
-            newNode.setNext(head);
-            head = newNode;
+
+
         } else { // adding to anywhere else than first and last
             // handle if adding to the first half
             if (index <= numOfEntries / 2) {
@@ -149,8 +164,21 @@ public class DoublyLinkedList<T> {
         numOfEntries++;
     }
 
-
+    /** Removes the entry at a given position from this list.
+     * Entries originally at positions higher than the given
+     * position are at the next lower position within the list,
+     * and the list's size is decreased by 1.
+     * @param index An integer that indicates the position of
+     * the entry to be removed.
+     * @return A reference to the removed entry.
+     * @throws IndexOutOfBoundsException if either
+     *    givenPosition less than 1, or
+     *    givenPosition greater than getLength()+1.
+     */
     public T remove(int index) {
+        if (INDEX_BASED_ON == 1) {
+            index -= INDEX_BASED_ON;
+        }
         // throw exception if index out of bounds
         if (index < 0 || index >= numOfEntries) {
             throw new IndexOutOfBoundsException("Index Out of Bounds");
@@ -248,6 +276,7 @@ public class DoublyLinkedList<T> {
         numOfEntries = 0;
     }
 
+
     /**
      * Replaces the entry at a given position in this list.
      *
@@ -262,6 +291,9 @@ public class DoublyLinkedList<T> {
      */
 
     public T replace(int givenPosition, T newEntry) {
+        if (INDEX_BASED_ON == 1) {
+            givenPosition -= INDEX_BASED_ON;
+        }
         if (givenPosition < 0 || givenPosition >= numOfEntries) {
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
@@ -311,6 +343,9 @@ public class DoublyLinkedList<T> {
      */
 
     public T getEntry(int givenPosition) {
+        if (INDEX_BASED_ON == 1) {
+            givenPosition -= INDEX_BASED_ON;
+        }
         if (givenPosition < 0 || givenPosition >= numOfEntries) {
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
@@ -341,6 +376,7 @@ public class DoublyLinkedList<T> {
         }
         return current.getData();
     }
+
 
     /**
      * Sees whether this list contains a given entry.

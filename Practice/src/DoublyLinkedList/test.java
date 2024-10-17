@@ -4,7 +4,7 @@ package DoublyLinkedList;
 public class test {
     public static void main(String[] args) {
         System.out.println("************************* Testing adding ****************************");
-        DoublyLinkedList<String> myList = new DoublyLinkedList<String>();
+        LList<String> myList = new LList<>();
         myList.add("0");
         myList.add("1");
         myList.add("2");
@@ -16,18 +16,18 @@ public class test {
         myList.add(4, "4");
         System.out.println("After adding to the missing index:\n" + myList);
 
-        DoublyLinkedList<String> myList2 = new DoublyLinkedList<String>();
-        myList2.add("0");
+        LList<String> myList2 = new LList<>();
+        myList2.add("1");
         myList2.add("2");
         myList2.add("3");
         myList2.add("4");
         myList2.add("5");
         myList2.add("6");
-        System.out.println("Target list:\n" + myList2 + "\t\t(Missing 1)");
-        myList2.add(1, "1");
+        System.out.println("Target list:\n" + myList2 + "\t\t(Missing 0)");
+        myList2.add(0, "0");
         System.out.println("After adding to the missing index:\n" + myList2);
 
-        DoublyLinkedList<String> myList3 = new DoublyLinkedList<String>();
+        LList<String> myList3 = new LList<>();
         myList3.add("0");
         myList3.add("1");
         myList3.add("2");
@@ -39,7 +39,7 @@ public class test {
         myList3.add(7, "7");
         System.out.println("After adding to the missing index:\n" + myList3);
 
-        DoublyLinkedList<String> myList4 = new DoublyLinkedList<String>();
+        LList<String> myList4 = new LList<String>();
         myList4.add("0");
         myList4.add("1");
         myList4.add("3");
@@ -52,7 +52,7 @@ public class test {
         System.out.println("After adding to the missing index:\n" + myList4);
 
         System.out.println("\n******************** Test remove ******************************");
-        DoublyLinkedList<String> myList5 = new DoublyLinkedList<String>();
+        LList<String> myList5 = new LList<>();
         myList5.add("0");
         myList5.add("1");
         myList5.add("2");
@@ -65,7 +65,7 @@ public class test {
         myList5.remove(0);
         System.out.println("After removed 0 : " + myList5);
 
-        DoublyLinkedList<String> myList6 = new DoublyLinkedList<String>();
+        LList<String> myList6 = new LList<>();
         myList6.add("0");
         myList6.add("1");
         myList6.add("2");
@@ -78,7 +78,7 @@ public class test {
         myList6.remove(7);
         System.out.println("After removed 7 : " + myList6);
 
-        DoublyLinkedList<String> myList7 = new DoublyLinkedList<String>();
+        LList<String> myList7 = new LList<>();
         myList7.add("0");
         myList7.add("1");
         myList7.add("2");
@@ -91,7 +91,7 @@ public class test {
         myList7.remove(2);
         System.out.println("After removed 2 : " + myList7);
 
-        DoublyLinkedList<String> myList8 = new DoublyLinkedList<String>();
+        LList<String> myList8 = new LList<>();
         myList8.add("0");
         myList8.add("1");
         myList8.add("2");
@@ -104,7 +104,7 @@ public class test {
         myList8.remove(5);
         System.out.println("After removed 5 : " + myList8);
 
-        DoublyLinkedList<String> myList9 = new DoublyLinkedList<String>();
+        LList<String> myList9 = new LList<>();
         myList9.add("0");
         myList9.add("1");
         myList9.add("2");
@@ -119,7 +119,7 @@ public class test {
         System.out.println("After removed 4 : " + myList9);
 
         System.out.println("\n******************** Test replace ******************************");
-        DoublyLinkedList<String> myList10 = new DoublyLinkedList<String>();
+        LList<String> myList10 = new LList<>();
         myList10.add("0");
         myList10.add("1");
         myList10.add("2");
