@@ -98,4 +98,17 @@ public class LinkedStack<T> implements StackInterface<T> {
         topNode = null;
         numOfEntries = 0;
     }
+
+    @Override
+    public String toString() {
+        LinkedStack<T> newCopy = this;
+
+        StringBuilder result = new StringBuilder("{");
+        while (newCopy.topNode != null) {
+            result.append(newCopy.pop()).append(", ");
+
+        }
+        return result + "}";
+
+    }
 }
