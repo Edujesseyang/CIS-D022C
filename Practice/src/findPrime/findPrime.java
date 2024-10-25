@@ -18,6 +18,10 @@ public class findPrime {
         System.out.println("Total: " + primeList.size() + "\t" + primeList);
 
         System.out.println("Is 42221 is prime? \t" + isPrime(42221));
+
+        System.out.println("Try perfect num: ");
+        List<Integer> perfectNum = allPerfectNumUpTo(999999999);
+        System.out.println(perfectNum);
     }
 
     public static List<Integer> allPrimesUpTo(int n) {
@@ -56,5 +60,20 @@ public class findPrime {
             }
         }
         return true;
+    }
+
+    public static List<Integer> allPerfectNumUpTo(int n) {
+        List<Integer> result = new ArrayList<>();
+        int num = 0;
+        for (int i = 0; ; i++) {
+            if (num >= n) {
+                break;
+            }
+            num = (int) ((Math.pow(2, i) - 1) * Math.pow(2, i - 1));
+            if (isPrime((int) (Math.pow(2, i) - 1))) {
+                result.add(num);
+            }
+        }
+        return result;
     }
 }
