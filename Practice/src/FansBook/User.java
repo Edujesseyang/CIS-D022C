@@ -1,11 +1,15 @@
 package FansBook;
 
 public class User {
+    // data part:
     private String name;
-    private int idNum;
     private String password;
     private String personInfo;
+
+    // friend list:
     private FriendsList friendsList;
+
+    // link part:
     private User nextUser;
 
     public User() {
@@ -14,15 +18,10 @@ public class User {
 
     public User(String name, String password, String info) {
         this.name = name;
-        this.idNum = generateID();
         this.password = password;
         this.personInfo = info;
         this.nextUser = null;
-    }
-
-    public static int generateID() {
-        int id = (int) (Math.random() * 100000) + 100000;
-        return id;
+        this.friendsList = new FriendsList();
     }
 
     public String getName() {
@@ -31,14 +30,6 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getIdNum() {
-        return idNum;
-    }
-
-    public void setIdNum(int idNum) {
-        this.idNum = idNum;
     }
 
     public String getPassword() {
@@ -65,11 +56,14 @@ public class User {
         this.nextUser = nextUser;
     }
 
+    public FriendsList getFriendsList() {
+        return friendsList;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "name='" + name + '\'' +
-                ", idNum=" + idNum +
                 ", password=" + password +
                 ", personInfo='" + personInfo + '\'' +
                 ", nextUser=" + nextUser +
@@ -81,7 +75,13 @@ public class User {
         System.out.println("Information: " + personInfo);
     }
 
-    public void addFirend(User friend){
+    public void addFriend(User friend) {
+        // FIXME: this method should add User by passing a string param(user name),
+        //  then add that user from UserDB, if no such the user name found, throw exception.
+        this.friendsList.add(friend);
+    }
 
+    public boolean deleteFriend(String name) {
+        return this.friendsList.delete(name);
     }
 }

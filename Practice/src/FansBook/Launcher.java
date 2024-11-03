@@ -9,10 +9,18 @@ public class Launcher {
 
     public static void main(String[] args) {
 
-        User u1 = createUser(sc);
+        User du1 = new User("Chloe", "00000", "Hello, im chloe");
+        User du2 = new User("Lucky", "00000", "Meaw!");
+        User u1 = new User("Jesse", "12345", "im jc");
 
         u1.printUser();
-        System.out.println(u1.getIdNum());
+        u1.getFriendsList().printList();
+        u1.addFriend(du2);
+        u1.addFriend(du1);
+        u1.getFriendsList().printList();
+        u1.deleteFriend("Lucky");
+        u1.getFriendsList().printList();
+
 
     }
 
