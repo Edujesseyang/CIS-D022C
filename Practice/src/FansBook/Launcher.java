@@ -1,8 +1,6 @@
 package FansBook;
 
-import java.util.Objects;
 import java.util.Scanner;
-
 
 
 public class Launcher {
@@ -32,7 +30,7 @@ public class Launcher {
 
         // main menu:
         while (true) {
-            System.out.println("\n*** Welcome to Fansbook ***");
+            System.out.println("\n********** Welcome to Fansbook **********");
             System.out.println("Menu:");
             System.out.println("1. Log in.");
             System.out.println("2. Sign up.");
@@ -50,7 +48,7 @@ public class Launcher {
                 help();
             }
             if (selection == 4) {
-                System.out.println("Thank you for using, hope you have a wonderful day!\n");
+                System.out.println("\n*** Thank you for using, hope you have a wonderful day! ***\n");
                 break;
             }
         }
@@ -80,24 +78,23 @@ public class Launcher {
             if (currentUser != null) {
                 break;
             }
-            System.out.println("can't find this user.");
+            System.out.println("User name not found.");
         }
         while (true) {
             System.out.print("Password: ");
             String password = sc.nextLine();
             System.out.println();
             if (currentUser.getPassword().equals(password)) {
-                System.out.println("logging successful!\n");
-
+                System.out.println("\n--------------------------------------------------\n\nLog in successful!\nWelcome back!");
                 break;
             }
-            System.out.println("Incorrect Password, try again!\n");
+            System.out.println("Incorrect Password, please try again!\n");
         }
     }
 
     public static void loginMenu(Scanner sc) {
         while (true) {
-            System.out.println("\nHi, " + currentUser.getName());
+            System.out.println("\n--------------------------------------------------\nHi, " + currentUser.getName());
             System.out.println("\nPlease select option: ");
             System.out.println("1. Edit my profile.");
             System.out.println("2. Search another user.");
@@ -112,6 +109,7 @@ public class Launcher {
                 searchUser(sc);
             }
             if (select == 3) {
+                System.out.println("\n--------------------------------------------------\n");
                 currentUser.printUser();
             }
             if (select == 4) {
@@ -126,7 +124,7 @@ public class Launcher {
 
     public static void friendMenu(Scanner sc) {
         while (true) {
-            System.out.println("\nFriend List Menu:");
+            System.out.println("\n--------------------------------------------------\nFriend List Menu:");
             System.out.println("1. View your friend list:");
             System.out.println("2. Delete a friend:");
             System.out.println("3. View your friend's information:");
@@ -135,6 +133,7 @@ public class Launcher {
             int select = selection(4);
 
             if (select == 1) {
+                System.out.println("\n--------------------------------------------------\n");
                 currentUser.printFriendList();
             }
             if (select == 2) {
@@ -159,14 +158,14 @@ public class Launcher {
 
     public static void searchUser(Scanner sc) {
 
-        System.out.println("\nEnter the username you want to search:");
+        System.out.println("\n--------------------------------------------------\nEnter the username you want to search:");
         String name = sc.nextLine();
         User target = mainUserDB.findUser(name);
         if (target == null) {
             System.out.println("\nUser not found!");
         } else {
             while (true) {
-                System.out.println("User found: \n1. add to friend list.\n2. view information.\n3. go back.");
+                System.out.println("\n--------------------------------------------------\nUser found: \n1. Add to friend list.\n2. View information.\n3. Go back.");
                 int confirm = sc.nextInt();
                 sc.nextLine();
                 if (confirm == 1) {
@@ -190,7 +189,7 @@ public class Launcher {
     }
 
     public static void editInfo(Scanner sc) {
-        System.out.println("\n1. Change password.");
+        System.out.println("\n--------------------------------------------------\n1. Change password.");
         System.out.println("2. Edit personal information.");
         System.out.println("3. Edit contact information.");
 
@@ -223,15 +222,15 @@ public class Launcher {
     }
 
     public static void logout() {
-        System.out.println("Thank you for using.\n");
+        System.out.println("\n--------------------------------------------------\nThank you for using.\n");
         currentUser = null;
     }
 
     public static void createUser(Scanner sc) {
-        String name = null;
+        String name;
         String password = "";
 
-        System.out.println("\nWelcome to sign up a new user:");
+        System.out.println("\n--------------------------------------------------\nWelcome to sign up a new user:");
         while (true) {
             System.out.println("Please enter your name: ");
             name = sc.nextLine();
@@ -241,23 +240,36 @@ public class Launcher {
                 break;
             }
         }
-        while (Objects.equals(password, "")) {
+        while (password.isEmpty()) {
             System.out.println("Please enter your password: ");
             password = sc.nextLine();
             if (password.length() > 10) {
                 System.out.println("Password is too long!!");
                 password = "";
             }
+            System.out.println("Please confirm your password:");
+            String confirm = sc.nextLine();
+            if (!confirm.equals(password)) {
+                System.out.println("They are not match!");
+                password = "";
+            }
         }
 
         User newUser = new User(name, password);
         mainUserDB.add(newUser);
+        System.out.println("... User created successfully, backing to main menu...");
     }
 
     public static void help() {
-        System.out.println("This program allow user to create an account, with a username and password, after login account successfully." +
-                " User can edit personal information, contact information, and search other user by the username. " +
-                "And also add other user to the friend list.");
+        System.out.println("""
+                ---------------------------------------------------------------
+                This program allow user to create an account,
+                with a username and password, after login account successfully.
+                User can edit personal information, contact information,
+                and search other user by the username.
+                And also add other user to the friend list.
+                ---------------------------------------------------------------
+                """);
     }
 
 }
