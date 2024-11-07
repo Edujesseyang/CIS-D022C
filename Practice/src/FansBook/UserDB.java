@@ -15,7 +15,6 @@ public class UserDB {
     private int primeIndex;
     private User[] hashTable;
     private int numOfUser;
-
     private int tableSlotOccupied;
 
     public UserDB() {

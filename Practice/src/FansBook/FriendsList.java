@@ -4,21 +4,6 @@ public class FriendsList {
     private User head;
     private int numOfFriends = 0;
 
-    public User getHead() {
-        return head;
-    }
-
-    public void setHead(User head) {
-        this.head = head;
-    }
-
-    public int getNumOfFriends() {
-        return numOfFriends;
-    }
-
-    public void setNumOfFriends(int numOfFriends) {
-        this.numOfFriends = numOfFriends;
-    }
 
     public boolean add(User friend) {
         if (numOfFriends == 0) {
