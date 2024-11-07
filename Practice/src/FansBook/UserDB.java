@@ -1,5 +1,7 @@
 package FansBook;
 
+import java.util.Arrays;
+
 /**
  *  User database, this is for storing all users.
  */
@@ -20,7 +22,6 @@ public class UserDB {
         this.numOfUser = 0;
         this.tableSlotOccupied = 0;
         this.hashTable = new User[PRIME_LIST[primeIndex]];
-
     }
 
     public void rehash() {
@@ -80,8 +81,48 @@ public class UserDB {
         return false;
     }
 
-    public User find(String name) {
+    public User findUser(String name) {
+        int hashIndex = getHashedIndex(name);
+        User current = hashTable[hashIndex];
+        while (current != null) {
+            if (current.getName().equals(name)) {
+                return current;
+            }
+            current = current.getNextUser();
+        }
         return null;
     }
+
+    public boolean deleteUser(String name) {
+        int hashIndex = getHashedIndex(name);
+        User current = hashTable[hashIndex];
+        User previous = null;
+        while (current != null) {
+            if (current.getName().equals(name)) {
+                if (previous == null) {
+                    hashTable[hashIndex] = current.getNextUser();
+                    if (hashTable[hashIndex] == null) {
+                        tableSlotOccupied--;
+                    }
+                } else {
+                    previous.setNextUser(current.getNextUser());
+                }
+                current.setNextUser(null);
+                numOfUser--;
+                return true;
+            }
+            previous = current;
+            current = current.getNextUser();
+        }
+        return false;
+    }
+
+    public void clear() {
+        Arrays.fill(hashTable, null);
+        numOfUser = 0;
+        tableSlotOccupied = 0;
+    }
+
+
 
 }
