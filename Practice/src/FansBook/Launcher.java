@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class Launcher {
     static Scanner sc = new Scanner(System.in);
+    static UserDB mainUserDB = new UserDB();
 
     public static void main(String[] args) {
 
@@ -34,9 +35,15 @@ public class Launcher {
         String info = "";
         try {
             System.out.println("Welcome to sign up a new user:");
-            System.out.println("Please enter your name: ");
-            name = sc.nextLine();
-
+            while (true) {
+                System.out.println("Please enter your name: ");
+                name = sc.nextLine();
+                if (mainUserDB.contain(name)) {
+                    System.out.println("This user name is already existed, change another one.");
+                } else {
+                    break;
+                }
+            }
             while (Objects.equals(password, "")) {
                 System.out.println("Please enter your password: ");
                 password = sc.nextLine();
@@ -50,8 +57,9 @@ public class Launcher {
         } catch (InputMismatchException e) {
             System.out.println(e.getMessage());
         }
-
-        return new User(name, password, info);
+        User newUser = new User(name, password, info);
+        mainUserDB.add(newUser);
+        return newUser;
     }
 
     public static void logIn() {
