@@ -68,14 +68,13 @@ public class UserDB {
     }
 
     public boolean contain(String name) {
-        for (User u : hashTable) {
-            User current = u;
-            while (current != null) {
-                if (current.getName().equals(name)) {
-                    return true;
-                }
-                current = current.getNextUser();
+        int hashIndex = getHashedIndex(name);
+        User current = hashTable[hashIndex];
+        while (current != null) {
+            if (current.getName().equals(name)) {
+                return true;
             }
+            current = current.getNextUser();
         }
         return false;
     }
@@ -121,7 +120,6 @@ public class UserDB {
         numOfUser = 0;
         tableSlotOccupied = 0;
     }
-
 
 
 }
