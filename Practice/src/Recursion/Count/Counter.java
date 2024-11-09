@@ -1,4 +1,4 @@
-package Counter;
+package Recursion.Count;
 
 /**
  * The counter-class implements a counter that will roll over to the initial
@@ -15,7 +15,7 @@ public class Counter {
     private boolean isRollovere = false;
 
     /**
-     * The default constructor for objects of class Counter. The Minimum is zero
+     * The default constructor for objects of class Resursion.Counter. The Minimum is zero
      * and the maximum is the largest possible integer.
      */
     public Counter() {
@@ -25,7 +25,7 @@ public class Counter {
     }
 
     /**
-     * The alternate constructor for objects of class Counter. The minimum and
+     * The alternate constructor for objects of class Resursion.Counter. The minimum and
      maximum values are given as parameters.
      * The counter starts at the minimum value.
      * @param min The minimum value that the counter can have
@@ -108,6 +108,6 @@ public class Counter {
      * @return a descriptive string about the object
      */
     public String toString() {
-        return "Counter{ value: " + num + "\tRange : (" + min + " - " + max + ") }";
+        return "Resursion.Counter{ value: " + num + "\tRange : (" + min + " - " + max + ") }";
     }
 }

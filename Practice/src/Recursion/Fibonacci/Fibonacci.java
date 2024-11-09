@@ -1,4 +1,4 @@
-package Fibonacci;
+package Recursion.Fibonacci;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;

@@ -1,4 +1,4 @@
-package Counter;
+package Recursion.Count;
 
 public class test {
     public static void main(String[] args) {
