@@ -96,13 +96,16 @@ public class BinaryTree<T> implements BinaryTreeInterface<T> {
 
     @Override
     public int getHeight() {
-        int height = 0;
-        TreeNode current = root;
-        while (current != null) {
-            current = current.left;
-            height++;
+        return getHeightRecursively(root);
+    }
+
+    public int getHeightRecursively(TreeNode node) {
+        if (node == null) {
+            return 0;
         }
-        return height;
+        int leftHeight = getHeightRecursively(node.left);
+        int rightHeight = getHeightRecursively(node.right);
+        return Math.max(leftHeight, rightHeight) + 1;
     }
 
     @Override
@@ -138,7 +141,6 @@ public class BinaryTree<T> implements BinaryTreeInterface<T> {
 
 
     private class TreeIterator implements TreeIteratorInterface<T> {
-
 
         @Override
         public Iterator<T> getPreorderIterator() {
