@@ -54,37 +54,6 @@ public class BinaryTree<T> implements BinaryTreeInterface<T> {
         this.root = new TreeNode(rootData);
     }
 
-    public void insert(T data) {
-        TreeNode newNode = new TreeNode(data);
-        if (this.isEmpty()) { // if the tree is empty
-            root = newNode;
-            return;
-        }
-
-        // if not, create a queue to make sure adding left right one by one.
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(root);
-
-        while (!queue.isEmpty()) {
-            TreeNode current = queue.poll();
-
-            if (current.left == null) {
-                current.left = newNode;
-                return;
-            } else {
-                queue.add(current.left);
-            }
-
-            if (current.right == null) {
-                current.right = newNode;
-                return;
-            } else {
-                queue.add(current.right);
-
-            }
-        }
-
-    }
 
     /**
      * Sets this binary tree to a new binary tree.
