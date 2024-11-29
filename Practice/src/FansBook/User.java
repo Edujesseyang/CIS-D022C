@@ -1,5 +1,6 @@
 package FansBook;
 
+
 public class User {
     // data part:
     private String name;
@@ -10,6 +11,7 @@ public class User {
     // friend list:
     private FriendsList friendsList;
 
+    public EdgeList connections;
     // link part:
     private User nextUser;
 
@@ -24,6 +26,7 @@ public class User {
         this.contactInfo = "Unknown contact.";
         this.nextUser = null;
         this.friendsList = new FriendsList();
+        this.connections = new EdgeList();
     }
 
     public String getName() {
@@ -95,11 +98,11 @@ public class User {
         return this.friendsList.delete(name);
     }
 
-    public void printFriendList(){
+    public void printFriendList() {
         this.friendsList.printList();
     }
 
-    public void printFriend(String name){
+    public void printFriend(String name) {
         this.friendsList.printItem(name);
     }
 }

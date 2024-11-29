@@ -121,5 +121,14 @@ public class UserDB {
         tableSlotOccupied = 0;
     }
 
+    public void print() {
+        for (User user : hashTable) {
+            User current = user;
+            while (current != null) {
+                current.printUser();
+                current = current.getNextUser();
+            }
+        }
+    }
 
 }

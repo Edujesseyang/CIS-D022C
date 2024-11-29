@@ -7,6 +7,8 @@ public class Launcher {
     static Scanner sc = new Scanner(System.in);
     static UserDB mainUserDB = new UserDB();
     static User currentUser = null;
+    static ConnectionGraph allUserNet = new ConnectionGraph();
+    static final String ADMIN_PASSWORD = "12345";
 
     public static void main(String[] args) {
         // default user for testing:
@@ -27,6 +29,18 @@ public class Launcher {
         mainUserDB.add(u2);
         mainUserDB.add(u3);
         mainUserDB.add(u4);
+        allUserNet.addVertex(u1);
+        allUserNet.addVertex(u2);
+        allUserNet.addVertex(u3);
+        allUserNet.addVertex(u4);
+
+        // add few connections to try connection.
+        allUserNet.connect(u1, u2);
+        allUserNet.connect(u2, u3);
+        allUserNet.connect(u2, u1);
+        allUserNet.connect(u3, u4);
+        allUserNet.connect(u4, u2);
+
 
         // main menu:
         while (true) {
@@ -35,8 +49,9 @@ public class Launcher {
             System.out.println("1. Log in.");
             System.out.println("2. Sign up.");
             System.out.println("3. Help.");
-            System.out.println("4. Exit.");
-            int selection = selection(4);
+            System.out.println("4. admin.");
+            System.out.println("5. Exit.");
+            int selection = selection(5);
             if (selection == 1) {
                 login(sc);
                 loginMenu(sc);
@@ -48,9 +63,13 @@ public class Launcher {
                 help();
             }
             if (selection == 4) {
+                admin(sc);
+            }
+            if (selection == 5) {
                 System.out.println("\n*** Thank you for using, hope you have a wonderful day! ***\n");
                 break;
             }
+
         }
     }
 
@@ -140,6 +159,7 @@ public class Launcher {
                 System.out.println("Enter the name your want to delete:");
                 String name = sc.nextLine();
                 if (currentUser.deleteFriend(name)) {
+                    allUserNet.disconnect(currentUser, mainUserDB.findUser(name));
                     System.out.println("Friend Deleted.");
                 } else {
                     System.out.println("Friend not found.");
@@ -174,6 +194,7 @@ public class Launcher {
 
                     } else {
                         currentUser.getFriendsList().add(target);
+                        allUserNet.connect(currentUser, target);
                         System.out.println("Friend added.");
                     }
                     break;
@@ -257,6 +278,7 @@ public class Launcher {
 
         User newUser = new User(name, password);
         mainUserDB.add(newUser);
+        allUserNet.addVertex(newUser);
         System.out.println("... User created successfully, backing to main menu...");
     }
 
@@ -270,6 +292,30 @@ public class Launcher {
                 And also add other user to the friend list.
                 ---------------------------------------------------------------
                 """);
+    }
+
+    public static void admin(Scanner sc) {
+        System.out.println("Enter you admin password:");
+        String password = sc.nextLine();
+        if (password.equals(ADMIN_PASSWORD)) {
+            int choice = 0;
+            while (choice != 3) {
+                System.out.println("\n\nWelcome to admin:");
+                System.out.println("1. Print all users.");
+                System.out.println("2. Print all connections.");
+                System.out.println("3. GO back.\n");
+                choice = sc.nextInt();
+                sc.nextLine();
+                if (choice == 1) {
+                    mainUserDB.print();
+                } else if (choice == 2) {
+                    allUserNet.printAllEdges();
+                }
+            }
+        } else {
+            System.out.println("Password is wrong!");
+
+        }
     }
 
 }
