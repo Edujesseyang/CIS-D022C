@@ -56,8 +56,19 @@ public class FriendsList {
         return false;
     }
 
+    public User findFriend(String name) {
+        User current = head;
+        while (current != null) {
+            if (current.getName().equals(name)) {
+                return current;
+            }
+            current = current.getNextUser();
+        }
+        return null;
+    }
+
     public void printList() {
-        System.out.println("Friends List: " + numOfFriends +" friends.");
+        System.out.println("Friends List: " + numOfFriends + " friends.");
         if (head == null) {
             System.out.println("You don't have any friend.");
             return;

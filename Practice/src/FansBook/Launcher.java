@@ -154,6 +154,29 @@ public class Launcher {
             if (select == 1) {
                 System.out.println("\n--------------------------------------------------\n");
                 currentUser.printFriendList();
+                System.out.println("Select a friend by enter name:");
+                String name = sc.nextLine();
+                User friend = currentUser.getFriendsList().findFriend(name);
+                if (friend == null) {
+                    System.out.println("Can't find this user...");
+                } else {
+                    int choice = 0;
+                    while (choice != 3) {
+                        System.out.println("\n\nUser: " + friend.getName());
+                        System.out.println("1. Print information.");
+                        System.out.println("2. Print User's connection.");
+                        System.out.println("3. Go back.\n\n");
+                        choice = sc.nextInt();
+                        sc.nextLine();
+                        if (choice == 1) {
+                            friend.printUser();
+                        }
+                        if (choice == 2) {
+                            friend.connections.print(); //FIXME
+                        }
+                    }
+
+                }
             }
             if (select == 2) {
                 System.out.println("Enter the name your want to delete:");
