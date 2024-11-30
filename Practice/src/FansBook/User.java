@@ -110,8 +110,8 @@ public class User {
         this.connections.add(newEdge);
     }
 
-    public boolean removeConnection(User begin, User end) {
-        return connections.remove(begin, end);
+    public void removeConnection(User begin, User end) {
+        connections.remove(begin, end);
     }
 
     public void printConnection() {

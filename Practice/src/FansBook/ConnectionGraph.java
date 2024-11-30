@@ -2,48 +2,46 @@ package FansBook;
 
 
 public class ConnectionGraph {
-    private UserDict vertice;
-    private EdgeList allEdges;
+    private final UserDict vertices;
+    private final EdgeList allEdges;
 
     public ConnectionGraph() {
-        vertice = new UserDict();
+        vertices = new UserDict();
         allEdges = new EdgeList();
     }
 
-    public boolean addVertex(User vert) {
-        if (vertice.contain(vert.getName())) {
-            return false;
+    public void addVertex(User vert) {
+        if (vertices.contain(vert.getName())) {
+            return;
         }
-        vertice.add(vert.getName(), vert);
-        return true;
+        vertices.add(vert.getName(), vert);
     }
 
-    public boolean connect(User begin, User end) {
-        User start = vertice.getUser(begin.getName());
-        User ending = vertice.getUser(end.getName());
+    public void connect(User begin, User end) {
+        User start = vertices.getUser(begin.getName());
+        User ending = vertices.getUser(end.getName());
         if (start == null || ending == null) {
-            return false;
+            return;
         }
 
         Edge newEdge = new Edge(start, ending);
         allEdges.add(newEdge);
-        return true;
     }
 
-    public boolean disconnect(User begin, User end) {
+    public void disconnect(User begin, User end) {
         if (begin == null || end == null) {
             throw new IllegalArgumentException("Begin or end user cannot be null");
         }
-        User start = vertice.getUser(begin.getName());
-        User ending = vertice.getUser(end.getName());
+        User start = vertices.getUser(begin.getName());
+        User ending = vertices.getUser(end.getName());
         if (start == null || ending == null) {
-            return false;
+            return;
         }
-        return allEdges.remove(begin, end);
+        allEdges.remove(begin, end);
     }
 
     public void printAllEdges() {
-        if (allEdges == null) {
+        if (allEdges.isEmpty()) {
             System.out.println("There is not connections.");
         }
         allEdges.print();

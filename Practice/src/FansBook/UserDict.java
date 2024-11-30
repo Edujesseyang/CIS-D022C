@@ -7,9 +7,7 @@ public class UserDict {
         private String name;
         private Pair next;
 
-        public Pair() {
-
-        }
+        public Pair() {}
 
         public Pair(String name, User user) {
             this.name = name;
