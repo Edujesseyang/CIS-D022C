@@ -36,10 +36,15 @@ public class Launcher {
 
         // add few connections to try connection.
         allUserNet.connect(u1, u2);
+        u1.addConnection(new Edge(u1, u2));
         allUserNet.connect(u2, u3);
+        u2.addConnection(new Edge(u2, u3));
         allUserNet.connect(u2, u1);
+        u2.addConnection(new Edge(u2, u1));
         allUserNet.connect(u3, u4);
+        u3.addConnection(new Edge(u3, u4));
         allUserNet.connect(u4, u2);
+        u4.addConnection(new Edge(u4, u2));
 
 
         // main menu:
@@ -143,72 +148,67 @@ public class Launcher {
 
     public static void friendMenu(Scanner sc) {
         while (true) {
-            System.out.println("\n--------------------------------------------------\nFriend List Menu:");
-            System.out.println("1. View your friend list:");
-            System.out.println("2. Delete a friend:");
-            System.out.println("3. View your friend's information:");
-            System.out.println("4. Go back.");
-
-            int select = selection(4);
-
-            if (select == 1) {
-                System.out.println("\n--------------------------------------------------\n");
-                currentUser.printFriendList();
+            System.out.println("\n--------------------------------------------------\n");
+            currentUser.printFriendList();
+            System.out.println("\n1. Select a friend");
+            System.out.println("2. Go back.");
+            int choose = selection(2);
+            if (choose == 1) {
                 System.out.println("Select a friend by enter name:");
                 String name = sc.nextLine();
                 User friend = currentUser.getFriendsList().findFriend(name);
                 if (friend == null) {
                     System.out.println("Can't find this user...");
+                    break;
                 } else {
-                    int choice = 0;
-                    while (choice != 3) {
+                    while (true) {
                         System.out.println("\n\nUser: " + friend.getName());
                         System.out.println("1. Print information.");
-                        System.out.println("2. Print User's connection.");
-                        System.out.println("3. Go back.\n\n");
-                        choice = sc.nextInt();
-                        sc.nextLine();
+                        System.out.println("2. Print this friend's connection.");
+                        System.out.println("3. Delete this friend.");
+                        System.out.println("4. Go back.");
+
+                        int choice = selection(4);
+
                         if (choice == 1) {
                             friend.printUser();
-                        }
-                        if (choice == 2) {
-                            friend.connections.print(); //FIXME
+                        } else if (choice == 2) {
+                            System.out.println("Connections of " + name + ": ");
+                            friend.printConnection();
+                        } else if (choice == 3) {
+                            if (currentUser.deleteFriend(name)) {
+                                allUserNet.disconnect(currentUser, friend);
+                                currentUser.removeConnection(currentUser, friend);
+                                System.out.println("Friend: " + name + " is deleted.");
+                                break;
+                            }
+                        } else if (choice == 4) {
+                            break;
                         }
                     }
-
                 }
-            }
-            if (select == 2) {
-                System.out.println("Enter the name your want to delete:");
-                String name = sc.nextLine();
-                if (currentUser.deleteFriend(name)) {
-                    allUserNet.disconnect(currentUser, mainUserDB.findUser(name));
-                    System.out.println("Friend Deleted.");
-                } else {
-                    System.out.println("Friend not found.");
-                }
-            }
-            if (select == 3) {
-                System.out.println("Enter the name your want to view:");
-                String name = sc.nextLine();
-                currentUser.printFriend(name);
-            }
-            if (select == 4) {
-                return;
+            } else if (choose == 2) {
+                break;
             }
         }
     }
 
+
     public static void searchUser(Scanner sc) {
 
-        System.out.println("\n--------------------------------------------------\nEnter the username you want to search:");
+        System.out.println("\n--------------------------------------------------\n");
+        System.out.println("Enter the username you want to search:\n");
         String name = sc.nextLine();
         User target = mainUserDB.findUser(name);
         if (target == null) {
             System.out.println("\nUser not found!");
         } else {
             while (true) {
-                System.out.println("\n--------------------------------------------------\nUser found: \n1. Add to friend list.\n2. View information.\n3. Go back.");
+                System.out.println("\n--------------------------------------------------\n");
+                System.out.println("User found: ");
+                System.out.println("1. Add to friend list.");
+                System.out.println("2. View information.");
+                System.out.println("3. Go back.\n");
                 int confirm = sc.nextInt();
                 sc.nextLine();
                 if (confirm == 1) {
@@ -218,6 +218,7 @@ public class Launcher {
                     } else {
                         currentUser.getFriendsList().add(target);
                         allUserNet.connect(currentUser, target);
+                        currentUser.addConnection(new Edge(currentUser, target));
                         System.out.println("Friend added.");
                     }
                     break;
@@ -320,25 +321,26 @@ public class Launcher {
     public static void admin(Scanner sc) {
         System.out.println("Enter you admin password:");
         String password = sc.nextLine();
-        if (password.equals(ADMIN_PASSWORD)) {
-            int choice = 0;
-            while (choice != 3) {
-                System.out.println("\n\nWelcome to admin:");
-                System.out.println("1. Print all users.");
-                System.out.println("2. Print all connections.");
-                System.out.println("3. GO back.\n");
-                choice = sc.nextInt();
-                sc.nextLine();
-                if (choice == 1) {
-                    mainUserDB.print();
-                } else if (choice == 2) {
-                    allUserNet.printAllEdges();
-                }
-            }
-        } else {
+        if (!password.equals(ADMIN_PASSWORD)) {
             System.out.println("Password is wrong!");
+            return;
+        }
+        while (true) {
+
+            int select = selection(3);
+
+            System.out.println("\n\nWelcome to admin:");
+            System.out.println("1. Print all users.");
+            System.out.println("2. Print all connections.");
+            System.out.println("3. GO back.\n");
+
+            if (select == 1) {
+                mainUserDB.print();
+            } else if (select == 2) {
+                allUserNet.printAllEdges();
+            }
 
         }
     }
-
 }
+

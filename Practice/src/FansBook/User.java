@@ -11,7 +11,7 @@ public class User {
     // friend list:
     private FriendsList friendsList;
 
-    public EdgeList connections;
+    private EdgeList connections;
     // link part:
     private User nextUser;
 
@@ -104,5 +104,21 @@ public class User {
 
     public void printFriend(String name) {
         this.friendsList.printItem(name);
+    }
+
+    public void addConnection(Edge newEdge) {
+        this.connections.add(newEdge);
+    }
+
+    public boolean removeConnection(User begin, User end) {
+        return connections.remove(begin, end);
+    }
+
+    public void printConnection() {
+        this.connections.print();
+    }
+
+    public int getFriendsCount(){
+        return this.friendsList.getSize();
     }
 }

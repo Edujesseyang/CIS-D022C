@@ -5,9 +5,9 @@ public class EdgeList {
     private Edge tail;
     private int size = 0;
 
-    public void add(Edge newEdge) {
+    public boolean add(Edge newEdge) {
         if (newEdge == null) {
-            throw new IllegalArgumentException("Edge cannot be null");
+            return false;
         }
 
         if (head == null) {
@@ -17,6 +17,7 @@ public class EdgeList {
         }
         tail = newEdge;
         size++;
+        return true;
     }
 
     public boolean remove(Edge edge) {

@@ -25,10 +25,7 @@ public class ConnectionGraph {
             return false;
         }
 
-        Edge newEdge = new Edge();
-        newEdge.setStartVertex(start);
-        newEdge.setEndVertex(ending);
-        start.connections.add(newEdge);
+        Edge newEdge = new Edge(start, ending);
         allEdges.add(newEdge);
         return true;
     }
@@ -42,10 +39,7 @@ public class ConnectionGraph {
         if (start == null || ending == null) {
             return false;
         }
-
-        boolean isRemovedFromAllEdges = allEdges.remove(begin, end);
-        boolean isRemovedFromUserList = start.connections.remove(begin, end);
-        return isRemovedFromAllEdges && isRemovedFromUserList;
+        return allEdges.remove(begin, end);
     }
 
     public void printAllEdges() {

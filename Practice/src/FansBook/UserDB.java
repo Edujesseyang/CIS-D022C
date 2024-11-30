@@ -122,6 +122,11 @@ public class UserDB {
     }
 
     public void print() {
+        if (hashTable == null || hashTable.length == 0) {
+            System.out.println("No user in the database.");
+            return;
+        }
+
         for (User user : hashTable) {
             User current = user;
             while (current != null) {

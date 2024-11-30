@@ -94,4 +94,8 @@ public class FriendsList {
             current = current.getNextUser();
         }
     }
+
+    public int getSize(){
+        return numOfFriends;
+    }
 }
